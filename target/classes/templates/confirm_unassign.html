@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Réaffecter les textes</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+
+<!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">Gestion des utilisateurs</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+            <span class="navbar-text text-white mr-3" th:text="'Connecté en tant que : ' + ${adminName}">Connecté en tant que : Admin</span>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="/admin/home" class="btn btn-outline-light mx-2">Acceuil</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/tasks" class="btn btn-outline-light mx-2">Dataset</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/logout" class="btn btn-danger mx-2">Se déconnecter</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+<div class="container mt-4">
+
+    <h3>Réaffectation des textes non annotés</h3>
+    <p><strong>Ancien utilisateur :</strong> <span th:text="${oldUserId}"></span></p>
+    <p><strong>Tâche :</strong> <span th:text="${taskId}"></span></p>
+
+    <form th:action="@{/admin/tasks/unassign/redistribute}" method="post">
+        <input type="hidden" name="taskId" th:value="${taskId}" />
+        <input type="hidden" name="oldUserId" th:value="${oldUserId}" />
+
+        <h5>Choisir les utilisateurs pour réaffecter :</h5>
+        <div class="mb-3">
+            <div th:each="user : ${otherUsers}">
+                <label>
+                    <input type="checkbox" name="newUserIds" th:value="${user.id}" />
+                    <span th:text="${user.name} + ' (' + ${user.email} + ')'"></span>
+                </label><br/>
+            </div>
+        </div>
+
+        <h5>Textes non encore annotés :</h5>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Texte</th>
+                
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="text : ${textEntries}">
+                <td th:text="${text.id}"></td>
+               <td th:text="${lineContents[text.id]}"></td>
+
+            </tr>
+            </tbody>
+        </table>
+
+        <button type="submit" class="btn btn-primary">Confirmer la réaffectation</button>
+        <a th:href="@{/admin/tasks/details/{id}(id=${taskId})}" class="btn btn-secondary">Annuler</a>
+    </form>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Gestion des utilisateurs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .navbar {
+            border-bottom: 3px solid #004080;
+        }
+        .navbar-brand {
+            font-weight: bold;
+        }
+        .navbar-nav .nav-item .btn {
+            margin-left: 10px;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-primary {
+            background-color: #0069d9;
+            border-color: #0062cc;
+        }
+        .btn-primary:hover {
+            background-color: #004bb5;
+            border-color: #004bb5;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+        .btn-warning:hover {
+            background-color: #e0a800;
+            border-color: #d39e00;
+        }
+
+        .table thead th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .table td, .table th {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .alert {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Barre de navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Gestion des utilisateurs</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+            <span class="navbar-text text-white me-3" th:text="'Connecté en tant que : ' + ${adminName}">
+                Connecté en tant que : Admin
+            </span>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="/admin/home" class="btn btn-outline-light mx-2">Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/tasks" class="btn btn-outline-light mx-2">Datasets</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/logout" class="btn btn-danger mx-2">Se déconnecter</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Contenu principal -->
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">👥 Liste des utilisateurs</h2>
+        <a href="/admin/add-users" class="btn btn-primary">+ Ajouter un utilisateur</a>
+    </div>
+
+    <!-- Table des utilisateurs -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nom complet</th>
+                    <th>Email</th>
+                    <th>Rôle</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.id}">1</td>
+                    <td th:text="${user.firstName + ' ' + user.lastName}">Nom Complet</td>
+                    <td th:text="${user.email}">email@exemple.com</td>
+                    <td th:text="${user.role}">Rôle</td>
+                    <td>
+                        <a th:href="@{'/admin/edit-user/' + ${user.id}}" class="btn btn-warning btn-sm">Modifier</a>
+                        <a th:href="@{'/admin/delete-user/' + ${user.id}}"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
+                           Supprimer
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

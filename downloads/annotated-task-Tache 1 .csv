@@ -1,0 +1,21 @@
+Ligne,"Texte1","Texte2",Annotation,Annotateur
+1,"Le chat est sur le tapis","Le chien court dans le jardin",neutre,Rajae EL KHANTACH
+2,"La voiture rouge est rapide","Le vélo est écologique",neutre,fatima  lougmiri
+3,"Le soleil brille aujourd'hui","La pluie commence demain",similaire,Aya BELLA
+4,"Les enfants jouent au parc","Les adultes lisent un livre",neutre,Rajae EL KHANTACH
+5,"Le café est chaud","Le thé est froid",similaire,fatima  lougmiri
+6,"Le livre est posé sur la table","La tablette est dans le sac",neutre,Aya BELLA
+7,"Un avion traverse le ciel","Un hélicoptère survole la ville",neutre,Rajae EL KHANTACH
+8,"La mer est calme ce matin","Les vagues frappent les rochers",proche,fatima  lougmiri
+9,"Le feu de bois crépite","Le radiateur chauffe la pièce",similaire,Aya BELLA
+10,"Les oiseaux chantent à l'aube","Les grenouilles coassent le soir",neutre,Rajae EL KHANTACH
+11,"Un enfant mange une pomme","Une femme prépare un gâteau",proche,fatima  lougmiri
+12,"Le train entre en gare","Le bus part du terminal",proche,Aya BELLA
+13,"Il lit un roman policier","Elle regarde un film romantique",neutre,Rajae EL KHANTACH
+14,"Un chaton joue avec une pelote","Un chiot mordille un jouet",proche,fatima  lougmiri
+15,"Le vent souffle fort","Les feuilles volent dans l'air",similaire,Aya BELLA
+16,"L'homme porte une valise","La femme tient un parapluie",similaire,Rajae EL KHANTACH
+17,"Le serveur apporte les plats","Le cuisinier prépare les repas",proche,fatima  lougmiri
+18,"Une étoile brille dans le ciel","La lune éclaire la nuit",proche,Aya BELLA
+19,"Le peintre travaille sur un tableau","Le musicien compose une chanson",similaire,Aya BELLA
+20,"Un étudiant révise pour l'examen","Un professeur corrige des copies",neutre,fatima  lougmiri

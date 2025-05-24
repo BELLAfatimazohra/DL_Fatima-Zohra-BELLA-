@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Créer une nouvelle Dataset</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background: linear-gradient(to right, #f1f4f9, #dff1ff);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .card {
+      border-radius: 15px;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.01);
+    }
+
+    .card-header {
+      background-color: #0069d9;
+      color: #fff;
+      border-radius: 15px 15px 0 0;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.3rem;
+    }
+
+    label {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .form-control:focus,
+    .form-control-file:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-secondary:hover {
+      background-color: #6c757d;
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+    }
+
+    .form-check label {
+      font-weight: normal;
+    }
+
+    .btn-group-custom {
+      display: flex;
+      gap: 15px;
+      justify-content: flex-end;
+    }
+
+    .form-section {
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="#">Admin Dashboard</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
+          aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+    <span class="navbar-text text-white mr-3">Connecté en tant que : Admin</span>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a href="/admin/manage-users" class="btn btn-outline-light mx-2">Gérer les utilisateurs</a>
+      </li>
+      <li class="nav-item">
+        <a href="/admin/tasks" class="btn btn-outline-light mx-2">Dataset</a>
+      </li>
+      <li class="nav-item">
+        <a href="/logout" class="btn btn-danger mx-2">Se déconnecter</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Contenu principal -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <div class="card">
+        <div class="card-header">
+          Créer une nouvelle Dataset
+        </div>
+        <div class="card-body">
+          <form method="POST" action="/admin/tasks/create" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="title">Nom :</label>
+              <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+
+            <div class="form-group">
+              <label for="description">Description :</label>
+              <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="csvFile">Fichier CSV :</label>
+              <input type="file" class="form-control-file" id="csvFile" name="csvFile" required>
+            </div>
+
+            <div class="form-group">
+              <label for="labels">Labels (séparés par des virgules) :</label>
+              <input type="text" class="form-control" id="labels" name="labels" required>
+            </div>
+
+            <div class="form-group">
+              <label>Choisir les utilisateurs à assigner :</label>
+              <div class="ml-2">
+                <th:block th:each="user : ${users}">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="selectedUsers"
+                           th:value="${user.id}" th:id="'user_' + ${user.id}">
+                    <label class="form-check-label" th:for="'user_' + ${user.id}">
+                      <span th:text="${user.firstName} + ' ' + ${user.lastName}"></span>
+                    </label>
+                  </div>
+                </th:block>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="dateLimite">Date limite :</label>
+              <input type="datetime-local" class="form-control" id="dateLimite" name="dateLimite" required>
+            </div>
+
+            <div class="form-group btn-group-custom mt-4">
+              <button type="submit" class="btn btn-primary">Créer Dataset</button>
+              <a href="/admin/home" class="btn btn-secondary">Annuler</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

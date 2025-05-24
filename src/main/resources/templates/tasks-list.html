@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Statistiques des Datasets</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f4f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            font-size: 1.6rem;
+            color: #ffffff;
+        }
+
+        .btn-outline-light:hover {
+            background-color: #ffffff;
+            color: #0d6efd;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 50px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+            max-width: 1000px;
+        }
+
+        h1 {
+            font-weight: 700;
+            color: #1d1d1f;
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        h1::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background-color: #0d6efd;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .table thead {
+            background-color: #0d6efd;
+            color: #fff;
+        }
+
+        .table td, .table th {
+            text-align: center;
+            vertical-align: middle !important;
+        }
+
+        .progress {
+            height: 20px;
+            border-radius: 50px;
+            background-color: #e9ecef;
+        }
+
+        .progress-bar {
+            font-weight: 500;
+            transition: width 0.6s ease;
+        }
+
+        .btn-sm {
+            font-size: 0.85rem;
+            padding: 6px 14px;
+            border-radius: 20px;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-sm:hover {
+            transform: scale(1.05);
+        }
+
+        .table td a.btn, .table td span {
+            margin: 4px;
+        }
+
+        .text-center i {
+            color: #0d6efd;
+            margin-right: 10px;
+        }
+
+        .navbar-text {
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .navbar-brand {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">Admin Dashboard</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
+            aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+        <span class="navbar-text text-white mr-3" th:text="'Connecté en tant que : ' + ${adminName}">
+            Connecté en tant que : Admin
+        </span>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="/admin/manage-users" class="btn btn-outline-light mx-1">👤 Utilisateurs</a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/tasks" class="btn btn-outline-light mx-1">📁 Datasets</a>
+            </li>
+            <li class="nav-item">
+                <a href="/logout" class="btn btn-danger mx-1">🔒 Déconnexion</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <h1><i class="fas fa-chart-bar"></i> Statistiques des Datasets</h1>
+
+    <div class="table-responsive mt-4">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Titre du Dataset</th>
+                    <th>Avancement</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="stat : ${taskStats}">
+                    <td th:text="${stat.title}">Titre</td>
+                    <td>
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar"
+                                 th:style="'width:' + ${stat.pourcentage} + '%'"
+                                 th:text="${#numbers.formatDecimal(stat.pourcentage, 1, 1)} + '%'">
+                                0%
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <a th:href="@{/admin/tasks/details/{id}(id=${stat.id})}" class="btn btn-primary btn-sm">🔍 Détails</a>
+                        <span th:if="${stat.canDownload}">
+                            <a th:href="@{/admin/tasks/download/{id}(id=${stat.id})}" class="btn btn-success btn-sm">⬇ Télécharger</a>
+                        </span>
+                        <span th:if="${!stat.canDownload}" class="text-muted small">
+                            ⏳ En attente
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Font Awesome -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

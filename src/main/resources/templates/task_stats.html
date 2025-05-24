@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Statistiques des tâches</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background-color: #f4f4f4;
+        }
+
+        .task-card {
+            background-color: #fff;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .task-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .chart-container {
+            width: 200px;
+            height: 200px;
+            margin: auto;
+        }
+
+        .pourcentage {
+            text-align: center;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Statistiques des Tâches</h1>
+
+<div th:each="stat, iterStat : ${taskStats}" class="task-card">
+    <div class="task-title" th:text="${stat.title}">Titre de la tâche</div>
+
+    <!-- ✅ Bouton Voir les annotations -->
+    <div style="text-align: center; margin-bottom: 1rem;">
+        <a th:href="@{'/admin/annotations/' + ${stat.id}}" class="btn btn-outline-primary">
+            Voir les annotations
+        </a>
+    </div>
+
+    <div class="chart-container">
+        <canvas th:attr="id='chart__' + ${iterStat.index}"></canvas>
+    </div>
+
+    <div class="pourcentage">
+        <span th:text="${stat.validated} + ' validés sur ' + ${stat.total} + ' (' + ${#numbers.formatDecimal(stat.pourcentage, 1, 1)} + '%)'"></span>
+    </div>
+</div>
+
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+    let stats = /*[[${taskStats}]]*/ [];
+
+    stats.forEach((stat, index) => {
+        let ctx = document.getElementById('chart__' + index).getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Validé', 'Non validé'],
+                datasets: [{
+                    data: [stat.validated, stat.total - stat.validated],
+                    backgroundColor: ['#4CAF50', '#FF5252'],
+                }]
+            },
+            options: {
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    }
+                }
+            }
+        });
+    });
+/*]]>*/
+</script>
+
+</body>
+</html>
