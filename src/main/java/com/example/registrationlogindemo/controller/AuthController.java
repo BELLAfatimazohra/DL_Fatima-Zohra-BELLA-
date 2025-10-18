@@ -104,18 +104,19 @@ public class AuthController {
         return "users";
     }
 
-    @GetMapping("/home")
+
     // redirection vers le home par le user stocke dans Authentification
+    @GetMapping("/home")
     public String home(Authentication authentication) {
-        // Vérifie le rôle de l'utilisateur connecté
-    	// authentication.getAuthorities() : Récupère une collection de GrantedAuthority.
-    	// Crée un Stream pour parcourir tous les rôles de l'utilisateur.
-        if (authentication != null && authentication.getAuthorities().stream()
-        		// Vérifie si au moins un élément du flux satisfait la condition.
+        if (authentication == null) {
+            return "redirect:/login"; // 🔒 redirige vers login si non authentifié
+        }
+
+        if (authentication.getAuthorities().stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"))) {
-            return "redirect:/admin/home";  // Redirige vers la page d'accueil de l'admin
+            return "redirect:/admin/home";
         } else {
-            return "redirect:/user/home";  // Redirige vers la page d'accueil de l'utilisateur
+            return "redirect:/user/home";
         }
     }
     

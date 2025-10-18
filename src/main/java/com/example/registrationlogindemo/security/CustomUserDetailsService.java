@@ -29,33 +29,22 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    
-    // Cette méthode est appelée par Spring Security pour récupérer les informations de l'utilisateur à partir de son nom d'utilisateur (dans ce cas, l'email).
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Cherche l'utilisateur par email
         User user = userRepository.findByEmail(username);
-        
+
         if (user == null) {
-            // Si l'utilisateur n'est pas trouvé, on lève une exception
             throw new UsernameNotFoundException("User not found");
         }
-        
-        // Affiche le nom de l'utilisateur et son rôle dans la console
-        System.out.println("User found: " + user.getName());
-        System.out.println("User role: " + user.getRole());
-        
-        // Vérifie si le rôle contient "ROLE_" au début et crée une autorité
-        // SimpleGrantedAuthority est utilisé pour encapsuler le rôle de l'utilisateur.
-        GrantedAuthority authority = new SimpleGrantedAuthority(user.getRole());
 
-        
-        // Affiche l'autorité dans la console
-        System.out.println("Granted Authority: " + authority.getAuthority());
+        // ✅ Ajoute le préfixe "ROLE_" si ce n’est pas déjà présent
+        String roleName = user.getRole().startsWith("ROLE_") ? user.getRole() : "ROLE_" + user.getRole();
+        GrantedAuthority authority = new SimpleGrantedAuthority(roleName);
 
-        // Retourne un objet UserDetails avec les informations nécessaires pour l'authentification
-        // On utilise le constructeur User de Spring Security pour retourner un objet UserDetails.
-        // Collections.singletonList(authority) : Liste des autorités (ici, une seule autorité).
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), Collections.singletonList(authority));
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                Collections.singletonList(authority)
+        );
     }
 
 
