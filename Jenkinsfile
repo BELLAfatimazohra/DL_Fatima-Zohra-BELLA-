@@ -4,7 +4,6 @@ pipeline {
     environment {
         DOCKER_IMAGE = "spring_app:latest"
     }
-
     stages {
         stage('Checkout') {
             steps {
