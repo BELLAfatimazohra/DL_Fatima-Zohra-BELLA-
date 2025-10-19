@@ -23,7 +23,6 @@ pipeline {
                 sh 'docker build -t $DOCKER_IMAGE .'
             }
         }
-
         stage('Deploy') {
             steps {
                 sh 'docker-compose down'
